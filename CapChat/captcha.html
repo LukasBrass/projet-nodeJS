@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heure</title>
+</head>
+<body>
+<canvas id="canvas" width="900" height="900">
+    Test
+</canvas>
+<script type="application/javascript">
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+
+    context.strokeRect(0,0, 900, 900);
+    var counter = 0;
+    var usedImg = [];
+    var singular = Math.floor(Math.random(9-1) +1);
+    for( var i = 0; i < 900; i += 300) {
+        for( var j = 0; j < 900; j += 300) {
+            img = new Image();
+            if( counter === singular) {
+                var number = Math.floor(Math.random(14 - 1) + 1);
+                img.src = '';//Have to get the nth singular cat;
+            } else {
+                var number = chooseNeutralCat(usedImg);
+                img.src = "./chat neutre "+ number + '.jpg';
+            }
+            img.onload = () => {
+                context.drawImage(img, i, j);
+            }
+            counter++;
+        }
+    }
+
+    function chooseNeutralCat(usedImg) {
+        var number = 0;
+        while(number === 0 || number in usedImg) {
+            number = Math.floor(Math.random(13-1) +1);
+        }
+
+        usedImg.push(number);
+        return number;
+    }
+</script>
+</body>
+</html>
