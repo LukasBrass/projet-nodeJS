@@ -8,36 +8,47 @@
 <canvas id="canvas" width="900" height="900">
     Test
 </canvas>
+
 <script type="application/javascript">
+    const MAX_SIZE = 900;
+    const PART_SIZE = 300;
+    const commonNumber = 13;
+    const uncommonNumber = 14;
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext("2d");
 
-    context.strokeRect(0,0, 900, 900);
+    context.strokeRect(0,0, MAX_SIZE, MAX_SIZE);
     var counter = 0;
     var usedImg = [];
-    var singular = Math.floor(Math.random(9-1) +1);
-    for( var i = 0; i < 900; i += 300) {
-        for( var j = 0; j < 900; j += 300) {
-            img = new Image();
-            if( counter === singular) {
-                var number = Math.floor(Math.random(14 - 1) + 1);
-                img.src = '';//Have to get the nth singular cat;
-            } else {
-                var number = chooseNeutralCat(usedImg);
-                img.src = "./chat neutre "+ number + '.jpg';
-            }
+    var number;
+    var singular = Math.floor(Math.random() * 9-1 +1);
+    for( var i = 0; i < MAX_SIZE; i += PART_SIZE) {
+        for( var j = 0; j < MAX_SIZE; j += PART_SIZE) {
+            let img = new Image();
+            let x = i;
+            let y = j;
             img.onload = () => {
-                context.drawImage(img, i, j);
+                context.drawImage(img, x, y, PART_SIZE, PART_SIZE);
+
+            };
+            if( counter === singular) {
+                number = Math.floor(Math.random() * (uncommonNumber - 1) + 1);
+                img.src = './singuliers/licorne.jpg';//Have to get the nth singular cat;
+            } else {
+                number = chooseNeutralCat(usedImg);
+                img.src = "./neutres/" + number + '.jpg';
             }
+            context.stroke();
             counter++;
         }
     }
+    console.log(usedImg);
 
     function chooseNeutralCat(usedImg) {
         var number = 0;
-        while(number === 0 || number in usedImg) {
-            number = Math.floor(Math.random(13-1) +1);
+        while(number === 0 || usedImg.includes(number)) {
+            number = Math.floor(Math.random() * (commonNumber - 1) +1);
         }
 
         usedImg.push(number);
