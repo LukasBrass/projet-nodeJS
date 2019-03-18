@@ -9,6 +9,10 @@
     Test
 </canvas>
 
+<canvas id="canvas2" width="300" height="300">
+    Test2
+</canvas>
+
 <script type="application/javascript">
     const MAX_SIZE = 900;
     const PART_SIZE = 300;
@@ -21,6 +25,8 @@
     context.strokeRect(0,0, MAX_SIZE, MAX_SIZE);
     var counter = 0;
     var usedImg = [];
+    var singular_x;
+    var singular_y;
     var number;
     var singular = Math.floor(Math.random() * 9-1 +1);
     for( var i = 0; i < MAX_SIZE; i += PART_SIZE) {
@@ -30,11 +36,13 @@
             let y = j;
             img.onload = () => {
                 context.drawImage(img, x, y, PART_SIZE, PART_SIZE);
-
             };
+            canvas.onclick = (event) => {checkSingular(event)};
             if( counter === singular) {
                 number = Math.floor(Math.random() * (uncommonNumber - 1) + 1);
-                img.src = './singuliers/licorne.jpg';//Have to get the nth singular cat;
+                img.src = '/getsingular';
+                singular_x = x;
+                singular_y = y;
             } else {
                 number = chooseNeutralCat(usedImg);
                 img.src = "./neutres/" + number + '.jpg';
@@ -43,7 +51,15 @@
             counter++;
         }
     }
-    console.log(usedImg);
+
+    function checkSingular (event) {
+        if (event.clientX > singular_x && event.clientX < singular_x+PART_SIZE && event.clientY > singular_y && event.clientY < singular_y+PART_SIZE) {
+            window.location.reload(true);
+        }
+        else {
+            i = i - 5;
+        }
+    }
 
     function chooseNeutralCat(usedImg) {
         var number = 0;
@@ -53,6 +69,28 @@
 
         usedImg.push(number);
         return number;
+    }
+
+
+
+    var canvas2 = document.getElementById('canvas2');
+    var context2 = canvas2.getContext("2d");
+
+    var i = 30;
+    var t = setInterval(runFunction, 1000);
+
+    function runFunction() {
+        context2.clearRect(0,0,290,290);
+        var min = Math.PI*2/30;
+        context2.beginPath();
+        context2.arc(150,150,50, 0, min*i);
+        context2.lineWidth = 10;
+        context2.stroke();
+        context2.fillText(i,145,150,40);
+        if(i < 0) {
+            location.reload();
+        }
+        i--;
     }
 </script>
 </body>
