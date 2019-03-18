@@ -19,9 +19,16 @@ let handleRequest = (request, response) => {
             response.end();
         });
     } else {
-        response.writeHead(404);
-        response.write('File not found. This route is not defined yet.');
-        response.end();
+        fs.readFile('./' + page, null, (error, data) => {
+            if (error) {
+                response.writeHead(404);
+                response.write('File not found');
+            } else {
+                response.write(data);
+            }
+            response.end();
+
+        });
     }
 };
 
